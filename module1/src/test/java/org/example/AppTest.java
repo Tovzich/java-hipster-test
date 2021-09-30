@@ -2,7 +2,11 @@ package org.example;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import org.apache.http.HttpStatus;
+import org.assertj.core.api.SoftAssertions;
+import org.example.api.CountryApi;
 import org.example.api.RegionApi;
+import org.example.model.CountryModel;
 import org.example.model.RegionModel;
 import org.example.model.TokenModel;
 import org.junit.jupiter.api.*;
@@ -62,17 +66,59 @@ class AppTest {
         RegionApi regionApi = retrofit.create(RegionApi.class);
 
         RegionModel regionModel = new RegionModel();
-        regionModel.setRegionName("Скайрим_" + (int)(Math.random() * 100));
+        regionModel.setRegionName("Скайрим_" + (int)(Math.random() * 1000));
 
-        Response<RegionModel> call = regionApi.postRegion(headers, regionModel).execute();
-        System.out.println(call.body());
-        assertThat(call.code()).isEqualTo(SC_CREATED);
+        Response<RegionModel> callPost = regionApi.postRegion(headers, regionModel).execute();
+        assertThat(callPost.code()).isEqualTo(SC_CREATED);
+
+        final Integer id = callPost.body().getId();
+
+        Response<RegionModel> callGetAfterPost = regionApi
+                .getRegionById(headers, id).execute();
+        SoftAssertions.assertSoftly(softly -> assertThat(callGetAfterPost.code()).isEqualTo(SC_OK));
+
+        Response<RegionModel> callDelete = regionApi
+                .deleteRegionById(headers, id).execute();
+        assertThat(callDelete.code()).isEqualTo(SC_NO_CONTENT);
+
+        Response<RegionModel> callGetAfterDelete = regionApi
+                .getRegionById(headers, id).execute();
+        assertThat(callGetAfterDelete.code()).isEqualTo(SC_NOT_FOUND);
     }
 
     @Test
-    void shouldGetRegionByID() throws IOException {
+    void shouldPostCountry() throws IOException {
         RegionApi regionApi = retrofit.create(RegionApi.class);
-        Response<RegionModel> call = regionApi.getRegionById(headers, 1051).execute();
-        assertThat(call.code()).isEqualTo(SC_OK);
+
+        RegionModel regionModel = new RegionModel();
+        regionModel.setRegionName("Скайрим_" + (int)(Math.random() * 1000));
+
+        Response<RegionModel> callPostRegion = regionApi.postRegion(headers, regionModel).execute();
+        assertThat(callPostRegion.code()).isEqualTo(SC_CREATED);
+
+        CountryApi countryApi = retrofit.create(CountryApi.class);
+
+        CountryModel countryModel = new CountryModel();
+        countryModel.setCountryName("Tamriel_" + (int) (Math.random() * 1000));
+        countryModel.setRegionId(callPostRegion.body().getId().toString());
+        System.out.println(callPostRegion.body().getId());
+        countryModel.setRegion(callPostRegion.body());
+
+        Response<CountryModel> callPostCountry = countryApi.postCountry(headers, countryModel).execute();
+        assertThat(callPostCountry.code()).isEqualTo(SC_CREATED);
+
+        final Integer id = callPostCountry.body().getId();
+
+        Response<CountryModel> callGetAfterPost = countryApi
+                .getCountryById(headers, id).execute();
+        assertThat(callGetAfterPost.code()).isEqualTo(SC_OK);
+
+        Response<CountryModel> callDelete = countryApi
+                .deleteCountryById(headers, id).execute();
+        assertThat(callDelete.code()).isEqualTo(SC_NO_CONTENT);
+
+        Response<CountryModel> callGetAfterDelete = countryApi
+                .getCountryById(headers, id).execute();
+        assertThat(callGetAfterDelete.code()).isEqualTo(SC_NOT_FOUND);
     }
 }

@@ -20,4 +20,7 @@ public interface RegionApi {
 
     @POST("api/authenticate")
     Call<TokenModel> postToken(@Body TokenModel tokenModel);
+
+    @DELETE("api/regions/{id}")
+    Call<RegionModel> deleteRegionById(@HeaderMap Map<String, String> headers, @Path("id") Integer id);
 }
