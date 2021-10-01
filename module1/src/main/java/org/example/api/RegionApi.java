@@ -1,7 +1,6 @@
 package org.example.api;
 
 import org.example.model.RegionModel;
-import org.example.model.TokenModel;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -17,9 +16,6 @@ public interface RegionApi {
 
     @POST("api/regions")
     Call<RegionModel> postRegion(@HeaderMap Map<String, String> headers, @Body RegionModel regionModel);
-
-    @POST("api/authenticate")
-    Call<TokenModel> postToken(@Body TokenModel tokenModel);
 
     @DELETE("api/regions/{id}")
     Call<RegionModel> deleteRegionById(@HeaderMap Map<String, String> headers, @Path("id") Integer id);

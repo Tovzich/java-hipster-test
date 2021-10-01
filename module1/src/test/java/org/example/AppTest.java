@@ -2,10 +2,10 @@ package org.example;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import org.apache.http.HttpStatus;
 import org.assertj.core.api.SoftAssertions;
 import org.example.api.CountryApi;
 import org.example.api.RegionApi;
+import org.example.api.TokenApi;
 import org.example.model.CountryModel;
 import org.example.model.RegionModel;
 import org.example.model.TokenModel;
@@ -35,14 +35,14 @@ class AppTest {
                 .client(httpClient.build())
                 .build();
 
-        RegionApi regionApi = retrofit.create(RegionApi.class);
+        TokenApi tokenApi = retrofit.create(TokenApi.class);
         TokenModel tokenModel = new TokenModel();
         tokenModel.setUsername("admin");
         tokenModel.setRememberMe(true);
         tokenModel.setPassword("u7ljdajLNo7PsVw7");
 
         try {
-            headers.put("Authorization", "Bearer " + regionApi.postToken(tokenModel).execute().body().getIdToken());
+            headers.put("Authorization", "Bearer " + tokenApi.postToken(tokenModel).execute().body().getIdToken());
         } catch (IOException | NullPointerException e) {
             throw new RuntimeException("Ошибка получения токена", e);
         }
@@ -50,14 +50,14 @@ class AppTest {
 
     @Test
     void shouldGetToken() throws IOException {
-        RegionApi regionApi = retrofit.create(RegionApi.class);
+        TokenApi tokenApi = retrofit.create(TokenApi.class);
 
         TokenModel tokenModel = new TokenModel();
         tokenModel.setUsername("admin");
         tokenModel.setRememberMe(true);
         tokenModel.setPassword("u7ljdajLNo7PsVw7");
 
-        Response<TokenModel> call = regionApi.postToken(tokenModel).execute();
+        Response<TokenModel> call = tokenApi.postToken(tokenModel).execute();
         assertThat(call.code()).isEqualTo(SC_OK);
     }
 
@@ -111,7 +111,7 @@ class AppTest {
 
         Response<CountryModel> callGetAfterPost = countryApi
                 .getCountryById(headers, id).execute();
-        assertThat(callGetAfterPost.code()).isEqualTo(SC_OK);
+        SoftAssertions.assertSoftly(softly -> assertThat(callGetAfterPost.code()).isEqualTo(SC_OK));
 
         Response<CountryModel> callDelete = countryApi
                 .deleteCountryById(headers, id).execute();
