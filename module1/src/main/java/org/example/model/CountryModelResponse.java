@@ -9,21 +9,44 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+        "countryName",
         "id",
-        "regionName"
+        "region"
 })
-public class RegionModel {
+public class CountryModelResponse {
+    @JsonProperty("countryName")
+    private String countryName;
 
     @JsonProperty("id")
     private Integer id;
 
-    @JsonProperty("regionName")
-    private String regionName;
+    @JsonProperty("region")
+    private RegionModelResponse region;
+
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<>();
+
+    @JsonProperty("countryName")
+    public String getCountryName() {
+        return countryName;
+    }
+
+    @JsonProperty("countryName")
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
+
+    @JsonProperty("region")
+    public RegionModelResponse getRegion() {
+        return region;
+    }
+
+    @JsonProperty("region")
+    public void setRegion(RegionModelResponse region) {
+        this.region = region;
+    }
 
     @JsonProperty("id")
     public Integer getId() {
@@ -33,16 +56,6 @@ public class RegionModel {
     @JsonProperty("id")
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    @JsonProperty("regionName")
-    public String getRegionName() {
-        return regionName;
-    }
-
-    @JsonProperty("regionName")
-    public void setRegionName(String regionName) {
-        this.regionName = regionName;
     }
 
     @JsonAnyGetter

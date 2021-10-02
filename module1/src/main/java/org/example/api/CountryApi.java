@@ -1,18 +1,21 @@
 package org.example.api;
 
-import org.example.model.CountryModel;
+import org.example.client.RetrofitClient;
+import org.example.model.CountryModelRequest;
+import org.example.model.CountryModelResponse;
 import retrofit2.Call;
 import retrofit2.http.*;
 
 import java.util.Map;
 
-public interface CountryApi {
+public interface CountryApi extends RetrofitClient.Api {
     @GET("api/countries/{id}")
-    Call<CountryModel> getCountryById(@HeaderMap Map<String, String> headers, @Path("id") Integer id);
+    Call<CountryModelResponse> getCountryById(@HeaderMap Map<String, String> headers, @Path("id") Integer id);
 
     @POST("api/countries")
-    Call<CountryModel> postCountry(@HeaderMap Map<String, String> headers, @Body CountryModel countryModel);
+    Call<CountryModelResponse> postCountry(@HeaderMap Map<String, String> headers,
+                                           @Body CountryModelRequest countryModelRequest);
 
     @DELETE("api/countries/{id}")
-    Call<CountryModel> deleteCountryById(@HeaderMap Map<String, String> headers, @Path("id") Integer id);
+    Call<CountryModelResponse> deleteCountryById(@HeaderMap Map<String, String> headers, @Path("id") Integer id);
 }
