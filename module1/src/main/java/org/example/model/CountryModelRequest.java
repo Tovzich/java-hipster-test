@@ -17,32 +17,26 @@ public class CountryModelRequest {
     @JsonProperty("region")
     private RegionModelResponse region;
 
-    @JsonGetter("countryName")
     public String getCountryName() {
         return countryName;
     }
 
-    @JsonSetter("countryName")
     public void setCountryName(String countryName) {
         this.countryName = countryName;
     }
 
-    @JsonGetter("regionId")
     public String getRegionId() {
         return regionId;
     }
 
-    @JsonSetter("regionId")
     public void setRegionId(String regionId) {
         this.regionId = regionId;
     }
 
-    @JsonGetter("region")
     public RegionModelResponse getRegion() {
         return region;
     }
 
-    @JsonSetter("region")
     public void setRegion(RegionModelResponse region) {
         this.region = region;
     }

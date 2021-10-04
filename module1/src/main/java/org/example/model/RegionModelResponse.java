@@ -1,5 +1,6 @@
 package org.example.model;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ public class RegionModelResponse {
     @JsonProperty("regionName")
     private String regionName;
 
+    @JsonAnySetter
     private final Map<String, Object> additionalProperties = new HashMap<>();
 
     public Integer getId() {
@@ -37,10 +39,6 @@ public class RegionModelResponse {
     }
 
     public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
+        return Collections.unmodifiableMap(this.additionalProperties);
     }
 }

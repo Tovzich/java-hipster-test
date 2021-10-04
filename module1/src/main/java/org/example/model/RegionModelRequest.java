@@ -17,7 +17,6 @@ public class RegionModelRequest {
     @JsonProperty("regionName")
     private String regionName;
 
-    @JsonProperty("id")
     public Integer getId() {
         return id;
     }

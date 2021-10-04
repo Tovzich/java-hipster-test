@@ -1,11 +1,15 @@
 package org.example;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.assertj.core.api.SoftAssertions;
-import org.example.controller.RetrofitController;
+import org.example.api.AuthApi;
 import org.example.model.AuthRequest;
 import org.example.model.AuthResponse;
 import org.junit.jupiter.api.*;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.io.IOException;
 
@@ -20,10 +24,15 @@ class AuthenticateTests {
         authRequest.setRememberMe(true);
         authRequest.setPassword("u7ljdajLNo7PsVw7");
 
-        Response<AuthResponse> call = RetrofitController
-                .getAuthControllerApi()
-                .authenticate(authRequest)
-                .execute();
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(JacksonConverterFactory.create())
+                .baseUrl("http://31.131.249.140:8080/")
+                .client(httpClient.build())
+                .build();
+        AuthApi authApi = retrofit.create(AuthApi.class);
+        Response<AuthResponse> call = authApi.authenticate(authRequest).execute();
 
         assertThat(call.code()).isEqualTo(SC_OK);
         assertThat(call.body()).isNotNull();
