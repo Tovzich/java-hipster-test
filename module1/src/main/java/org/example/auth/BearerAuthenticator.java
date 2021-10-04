@@ -17,10 +17,10 @@ public class BearerAuthenticator implements Authenticator {
     @Nullable
     @Override
     public Request authenticate(@Nullable Route route, @NotNull Response response) {
-        AuthRequest authRequest = new AuthRequest();
-        authRequest.setUsername("admin");
-        authRequest.setRememberMe(true);
-        authRequest.setPassword("u7ljdajLNo7PsVw7");
+        AuthRequest authRequest = new AuthRequest()
+                .password("u7ljdajLNo7PsVw7")
+                .username("admin")
+                .rememberMe(true);
 
         retrofit2.Response<AuthResponse> callPost;
         try {

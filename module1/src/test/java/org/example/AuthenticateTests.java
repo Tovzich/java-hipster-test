@@ -19,10 +19,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AuthenticateTests {
     @Test
     void shouldGetToken() throws IOException {
-        AuthRequest authRequest = new AuthRequest();
-        authRequest.setUsername("admin");
-        authRequest.setRememberMe(true);
-        authRequest.setPassword("u7ljdajLNo7PsVw7");
+        AuthRequest authRequest = new AuthRequest()
+                .password("u7ljdajLNo7PsVw7")
+                .username("admin")
+                .rememberMe(true);
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
