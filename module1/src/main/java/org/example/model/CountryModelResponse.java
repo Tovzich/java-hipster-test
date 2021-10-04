@@ -25,7 +25,6 @@ public class CountryModelResponse {
     @JsonProperty("region")
     private RegionModelResponse region;
 
-    @JsonIgnore
     private final Map<String, Object> additionalProperties = new HashMap<>();
 
     public String getCountryName() {

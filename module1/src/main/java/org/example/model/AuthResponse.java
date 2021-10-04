@@ -15,7 +15,6 @@ public class AuthResponse {
     @JsonProperty("id_token")
     private String idToken;
 
-    @JsonIgnore
     private final Map<String, Object> additionalProperties = new HashMap<>();
 
     public String getIdToken() {

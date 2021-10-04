@@ -18,7 +18,6 @@ public class RegionModelResponse {
     @JsonProperty("regionName")
     private String regionName;
 
-    @JsonIgnore
     private final Map<String, Object> additionalProperties = new HashMap<>();
 
     public Integer getId() {
