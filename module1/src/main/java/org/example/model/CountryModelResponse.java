@@ -28,42 +28,34 @@ public class CountryModelResponse {
     @JsonIgnore
     private final Map<String, Object> additionalProperties = new HashMap<>();
 
-    @JsonProperty("countryName")
     public String getCountryName() {
         return countryName;
     }
 
-    @JsonProperty("countryName")
     public void setCountryName(String countryName) {
         this.countryName = countryName;
     }
 
-    @JsonProperty("region")
     public RegionModelResponse getRegion() {
         return region;
     }
 
-    @JsonProperty("region")
     public void setRegion(RegionModelResponse region) {
         this.region = region;
     }
 
-    @JsonProperty("id")
     public Integer getId() {
         return id;
     }
 
-    @JsonProperty("id")
     public void setId(Integer id) {
         this.id = id;
     }
 
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
-    @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }

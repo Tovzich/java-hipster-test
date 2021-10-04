@@ -47,6 +47,9 @@ class CountryAndRegionTests {
                 .postRegion(headers, regionModelRequest)
                 .execute();
         assertThat(callPostRegion.code()).isEqualTo(SC_CREATED);
+        assertThat(callPostRegion.body()).isNotNull();
+        final Integer regionId = callPostRegion.body().getId();
+
         SoftAssertions.assertSoftly(softly -> {
             assertThat(callPostRegion.body().getId())
                     .isNotZero()
@@ -55,19 +58,13 @@ class CountryAndRegionTests {
             assertThat(callPostRegion.body().getAdditionalProperties()).isEmpty();
         });
 
-        final Integer regionId;
-        try {
-            regionId = callPostRegion.body().getId();
-        } catch (NullPointerException e) {
-            throw new RuntimeException("NPE Ошибка получения id региона", e);
-        }
-
         Response<RegionModelResponse> callGetRegionAfterPost = RetrofitController
                 .getRegionControllerApi()
                 .getRegionById(headers, regionId)
                 .execute();
+        assertThat(callGetRegionAfterPost.code()).isEqualTo(SC_OK);
+        assertThat(callGetRegionAfterPost.body()).isNotNull();
         SoftAssertions.assertSoftly(softly -> {
-            assertThat(callGetRegionAfterPost.code()).isEqualTo(SC_OK);
             assertThat(callGetRegionAfterPost.body().getId()).isEqualTo(regionId);
             assertThat(callGetRegionAfterPost.body().getRegionName()).isEqualTo(regionName);
             assertThat(callGetRegionAfterPost.body().getAdditionalProperties()).isEmpty();
@@ -97,6 +94,9 @@ class CountryAndRegionTests {
                 .postRegion(headers, regionModelRequest)
                 .execute();
         assertThat(callPostRegion.code()).isEqualTo(SC_CREATED);
+        assertThat(callPostRegion.body()).isNotNull();
+        final Integer regionId = callPostRegion.body().getId();
+
         SoftAssertions.assertSoftly(softly -> {
             assertThat(callPostRegion.body().getId())
                     .isNotZero()
@@ -109,12 +109,6 @@ class CountryAndRegionTests {
         final String countryName = "Tamriel_" + (int) (Math.random() * 1000);
         countryModelRequest.setCountryName(countryName);
 
-        final Integer regionId;
-        try {
-            regionId = callPostRegion.body().getId();
-        } catch (NullPointerException e) {
-            throw new RuntimeException("NPE Ошибка получения id региона", e);
-        }
 
         countryModelRequest.setRegionId(regionId.toString());
         countryModelRequest.setRegion(callPostRegion.body());
@@ -123,8 +117,11 @@ class CountryAndRegionTests {
                 .getCountryControllerApi()
                 .postCountry(headers, countryModelRequest)
                 .execute();
+        assertThat(callPostCountry.code()).isEqualTo(SC_CREATED);
+        assertThat(callPostCountry.body()).isNotNull();
+        final Integer countryId = callPostCountry.body().getId();
+
         SoftAssertions.assertSoftly(softly -> {
-            assertThat(callPostCountry.code()).isEqualTo(SC_CREATED);
             assertThat(callPostCountry.body().getId())
                     .isNotZero()
                     .isPositive();
@@ -135,19 +132,14 @@ class CountryAndRegionTests {
             assertThat(callPostCountry.body().getAdditionalProperties()).isEmpty();
         });
 
-        final Integer countryId;
-        try {
-            countryId = callPostCountry.body().getId();
-        } catch (Exception e) {
-            throw new RuntimeException("NPE Ошибка получения id страны", e);
-        }
 
         Response<CountryModelResponse> callGetAfterPostCountry = RetrofitController
                 .getCountryControllerApi()
                 .getCountryById(headers, countryId)
                 .execute();
+        assertThat(callGetAfterPostCountry.code()).isEqualTo(SC_OK);
+        assertThat(callGetAfterPostCountry.body()).isNotNull();
         SoftAssertions.assertSoftly(softly -> {
-            assertThat(callGetAfterPostCountry.code()).isEqualTo(SC_OK);
             assertThat(callGetAfterPostCountry.body().getId()).isEqualTo(countryId);
             assertThat(callGetAfterPostCountry.body().getCountryName()).isEqualTo(countryName);
             assertThat(callGetAfterPostCountry.body().getRegion().getRegionName()).isEqualTo(regionName);

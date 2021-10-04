@@ -25,8 +25,10 @@ class AuthenticateTests {
                 .authenticate(authRequest)
                 .execute();
 
+        assertThat(call.code()).isEqualTo(SC_OK);
+        assertThat(call.body()).isNotNull();
+
         SoftAssertions.assertSoftly(softly -> {
-            assertThat(call.code()).isEqualTo(SC_OK);
             assertThat(call.body().getIdToken()).isNotEmpty();
             assertThat(call.body().getAdditionalProperties()).isEmpty();
         });

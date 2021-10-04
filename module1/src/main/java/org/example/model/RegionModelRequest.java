@@ -22,17 +22,14 @@ public class RegionModelRequest {
         return id;
     }
 
-    @JsonProperty("id")
     public void setId(Integer id) {
         this.id = id;
     }
 
-    @JsonProperty("regionName")
     public String getRegionName() {
         return regionName;
     }
 
-    @JsonProperty("regionName")
     public void setRegionName(String regionName) {
         this.regionName = regionName;
     }
