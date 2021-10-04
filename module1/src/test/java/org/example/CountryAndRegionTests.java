@@ -7,35 +7,11 @@ import org.junit.jupiter.api.*;
 import retrofit2.Response;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.apache.http.HttpStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CountryAndRegionTests {
-    static final Map<String, String> headers = new HashMap<>();
-
-    @BeforeAll
-    static void beforeAll() {
-        AuthRequest authRequest = new AuthRequest();
-        authRequest.setUsername("admin");
-        authRequest.setRememberMe(true);
-        authRequest.setPassword("u7ljdajLNo7PsVw7");
-
-        try {
-            Response<AuthResponse> callPost = RetrofitController
-                    .getAuthControllerApi()
-                    .authenticate(authRequest)
-                    .execute();
-            headers.put("Authorization", "Bearer " + callPost.body().getIdToken());
-        } catch (IOException e) {
-            throw new RuntimeException("I/O Ошибка получения токена", e);
-        } catch (NullPointerException e) {
-            throw new RuntimeException("NPE Ошибка получения токена", e);
-        }
-    }
-
     @Test
     void shouldPostRegion() throws IOException {
         RegionModelRequest regionModelRequest = new RegionModelRequest();
@@ -44,7 +20,7 @@ class CountryAndRegionTests {
 
         Response<RegionModelResponse> callPostRegion = RetrofitController
                 .getRegionControllerApi()
-                .postRegion(headers, regionModelRequest)
+                .postRegion(regionModelRequest)
                 .execute();
         assertThat(callPostRegion.code()).isEqualTo(SC_CREATED);
         assertThat(callPostRegion.body()).isNotNull();
@@ -60,7 +36,7 @@ class CountryAndRegionTests {
 
         Response<RegionModelResponse> callGetRegionAfterPost = RetrofitController
                 .getRegionControllerApi()
-                .getRegionById(headers, regionId)
+                .getRegionById(regionId)
                 .execute();
         assertThat(callGetRegionAfterPost.code()).isEqualTo(SC_OK);
         assertThat(callGetRegionAfterPost.body()).isNotNull();
@@ -72,13 +48,13 @@ class CountryAndRegionTests {
 
         Response<RegionModelResponse> callDeleteRegion = RetrofitController
                 .getRegionControllerApi()
-                .deleteRegionById(headers, regionId)
+                .deleteRegionById(regionId)
                 .execute();
         assertThat(callDeleteRegion.code()).isEqualTo(SC_NO_CONTENT);
 
         Response<RegionModelResponse> callGetRegionAfterDelete = RetrofitController
                 .getRegionControllerApi()
-                .getRegionById(headers, regionId)
+                .getRegionById(regionId)
                 .execute();
         assertThat(callGetRegionAfterDelete.code()).isEqualTo(SC_NOT_FOUND);
     }
@@ -91,7 +67,7 @@ class CountryAndRegionTests {
 
         Response<RegionModelResponse> callPostRegion = RetrofitController
                 .getRegionControllerApi()
-                .postRegion(headers, regionModelRequest)
+                .postRegion(regionModelRequest)
                 .execute();
         assertThat(callPostRegion.code()).isEqualTo(SC_CREATED);
         assertThat(callPostRegion.body()).isNotNull();
@@ -115,7 +91,7 @@ class CountryAndRegionTests {
 
         Response<CountryModelResponse> callPostCountry = RetrofitController
                 .getCountryControllerApi()
-                .postCountry(headers, countryModelRequest)
+                .postCountry(countryModelRequest)
                 .execute();
         assertThat(callPostCountry.code()).isEqualTo(SC_CREATED);
         assertThat(callPostCountry.body()).isNotNull();
@@ -135,7 +111,7 @@ class CountryAndRegionTests {
 
         Response<CountryModelResponse> callGetAfterPostCountry = RetrofitController
                 .getCountryControllerApi()
-                .getCountryById(headers, countryId)
+                .getCountryById(countryId)
                 .execute();
         assertThat(callGetAfterPostCountry.code()).isEqualTo(SC_OK);
         assertThat(callGetAfterPostCountry.body()).isNotNull();
@@ -150,23 +126,23 @@ class CountryAndRegionTests {
 
         Response<CountryModelResponse> callDeleteCountry = RetrofitController
                 .getCountryControllerApi()
-                .deleteCountryById(headers, countryId).execute();
+                .deleteCountryById(countryId).execute();
         SoftAssertions.assertSoftly(softly -> assertThat(callDeleteCountry.code()).isEqualTo(SC_NO_CONTENT));
 
         Response<CountryModelResponse> callGetAfterDeleteCountry = RetrofitController
                 .getCountryControllerApi()
-                .getCountryById(headers, countryId).execute();
+                .getCountryById(countryId).execute();
         SoftAssertions.assertSoftly(softly -> assertThat(callGetAfterDeleteCountry.code()).isEqualTo(SC_NOT_FOUND));
 
         Response<RegionModelResponse> callDeleteRegion = RetrofitController
                 .getRegionControllerApi()
-                .deleteRegionById(headers, regionId)
+                .deleteRegionById(regionId)
                 .execute();
         assertThat(callDeleteRegion.code()).isEqualTo(SC_NO_CONTENT);
 
         Response<RegionModelResponse> callGetAfterDeleteRegion = RetrofitController
                 .getRegionControllerApi()
-                .getRegionById(headers, regionId)
+                .getRegionById(regionId)
                 .execute();
         assertThat(callGetAfterDeleteRegion.code()).isEqualTo(SC_NOT_FOUND);
     }

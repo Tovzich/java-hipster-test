@@ -6,20 +6,13 @@ import org.example.model.RegionModelResponse;
 import retrofit2.Call;
 import retrofit2.http.*;
 
-import java.util.List;
-import java.util.Map;
-
 public interface RegionApi extends RetrofitClient.Api {
     @GET("api/regions/{id}")
-    Call<RegionModelResponse> getRegionById(@HeaderMap Map<String, String> headers, @Path("id") Integer id);
-
-    @GET("api/regions")
-    Call<List<RegionModelResponse>> getRegions(@HeaderMap Map<String, String> headers);
+    Call<RegionModelResponse> getRegionById(@Path("id") Integer id);
 
     @POST("api/regions")
-    Call<RegionModelResponse> postRegion(@HeaderMap Map<String, String> headers,
-                                         @Body RegionModelRequest regionModelRequest);
+    Call<RegionModelResponse> postRegion(@Body RegionModelRequest regionModelRequest);
 
     @DELETE("api/regions/{id}")
-    Call<RegionModelResponse> deleteRegionById(@HeaderMap Map<String, String> headers, @Path("id") Integer id);
+    Call<RegionModelResponse> deleteRegionById(@Path("id") Integer id);
 }
