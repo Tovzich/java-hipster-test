@@ -31,24 +31,12 @@ public class CountryModelResponse {
         return countryName;
     }
 
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
-    }
-
     public RegionModelResponse getRegion() {
         return region;
     }
 
-    public void setRegion(RegionModelResponse region) {
-        this.region = region;
-    }
-
     public Integer getId() {
         return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Map<String, Object> getAdditionalProperties() {

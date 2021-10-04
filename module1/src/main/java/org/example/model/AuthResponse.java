@@ -23,10 +23,6 @@ public class AuthResponse {
         return idToken;
     }
 
-    public void setIdToken(String idToken) {
-        this.idToken = idToken;
-    }
-
     public Map<String, Object> getAdditionalProperties() {
         return Collections.unmodifiableMap(this.additionalProperties);
     }

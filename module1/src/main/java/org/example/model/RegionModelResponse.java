@@ -26,16 +26,8 @@ public class RegionModelResponse {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getRegionName() {
         return regionName;
-    }
-
-    public void setRegionName(String regionName) {
-        this.regionName = regionName;
     }
 
     public Map<String, Object> getAdditionalProperties() {
